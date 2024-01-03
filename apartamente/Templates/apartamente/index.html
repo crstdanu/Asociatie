@@ -1,0 +1,137 @@
+{% extends "apartamente/base.html" %}
+
+{% block body %}
+<h3 class="m-4">All apartments</h3>
+<div class="row">
+    <div class="col-12">
+        {% if apartamente %}
+        <div class="card bg-light ms-4 me-4 mb-4">
+            <div class="card-header">
+                <i class="fa-solid fa-list fa-lg"></i> Apartment Records
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Apartment Number</th>
+                                <th scope="col">Owner's First Name</th>
+                                <th scope="col">Owner's Last Name</th>
+                                <th scope="col">Number of Inhabitants</th>
+                                <th scope="col">Total Debt</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for apart in apartamente %}
+                            <tr>
+                                <td>{{ apart.apartment_number }}</td>
+                                <td>{{ apart.owner_first_name }}</td>
+                                <td>{{ apart.owner_last_name }}</td>
+                                <td>{{ apart.inhabitants_nr }}</td>
+                                <!-- TODO - sa fac valoarea float cu doua zerouri -->
+                                <td>{{ apart.calculate_total_costs }} lei</td>
+                                <td>
+                                    <button type="button" class="btn btn-success me-1"
+                                        href="{% url 'view_apartment' apart.id %}" data-bs-toggle="modal"
+                                        data-bs-target="#myModal{{apart.id}}">
+                                        Info
+                                    </button>
+
+                                    <!-- Modal - View Student -->
+                                    <div class="modal" id="myModal{{apart.id}}" tabindex="-1"
+                                        aria-labelledby="myModalLabel1" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">
+                                                        Apartment: {{ apart.apartment_number }}
+                                                        Owner: {{ apart.owner_first_name }} {{ apart.owner_last_name }}
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <ul class="list-unstyled">
+                                                        <li>Apartment Number:
+                                                            <strong>{{ apart.apartment_number }}</strong>
+                                                        </li>
+                                                        <li>First Name: <strong>{{ apart.owner_first_name }}</strong>
+                                                        </li>
+                                                        <li>Last Name: <strong>{{ apart.owner_last_name }}</strong></li>
+                                                        <li>Inhabitants: <strong>{{ apart.inhabitants_nr }}</strong>
+                                                        </li>
+                                                        <li>Email: <strong>{{ apart.email }}</strong></li>
+                                                        <li>Address: <strong>{{ apart.address }}</strong></li>
+                                                        <li>Cold Water Index:
+                                                            <strong>{{ apart.cold_water_index }}</strong>
+                                                        </li>
+                                                        <li>Total Debt:
+                                                            <strong>{{ apart.calculate_total_costs }}</strong>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-warning me-1" href="{% url 'view' apart.id %}">
+                                        View
+                                    </a>
+                                    <a class="btn btn-warning me-1" href="{% url 'edit' apart.id %}">
+                                        Edit
+                                    </a>
+
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#delete{{apart.id}}">Del</button>
+
+                                    <!-- Modal - Delete Student -->
+                                    <div class="modal" id="delete{{apart.id}}" tabindex="-1"
+                                        aria-labelledby="myModalLabel2" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">
+                                                        Apartment: {{apart.apartment_number}} Owner:
+                                                        {{ apart.owner_first_name }} {{ apart.owner_last_name }}
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to delete this apartment?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form action="{% url 'delete' apart.id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <input type="submit" class="btn btn-primary" value="Delete">
+                                                    </form>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                </p>
+            </div>
+        </div>
+        {% else %}
+        <h5 class="alert alert-primary ms-4 me-4">No apartment records</h5>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

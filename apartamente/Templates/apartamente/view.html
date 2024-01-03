@@ -1,0 +1,58 @@
+{% extends "apartamente/base.html" %}
+
+{% block body %}
+<h3 class="text-center m-4">Info apartment - {{ apartamente.apartment_number }}</h3>
+
+<div class="card bg-light mb-3" style="max-width: 40rem;">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Ce?</th>
+                <th scope="col">Cum?</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-active">
+                <th>Apartment number</th>
+                <td>{{ apartamente.apartment_number }}</td>
+
+            </tr>
+            <tr>
+                <th>First Name</th>
+                <td>{{apartamente.owner_first_name}}</td>
+            </tr>
+            <tr class="table-active">
+                <th>Last name</th>
+                <td>{{ apartamente.owner_last_name }}</td>
+
+            </tr>
+            <tr>
+                <th>Inhabitants number</th>
+                <td>{{apartamente.inhabitants_nr}}</td>
+            </tr>
+            <tr class="table-active">
+                <th>Email</th>
+                <td>{{ apartamente.email }}</td>
+
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{apartamente.owner_first_name}}</td>
+            </tr>
+            <tr class="table-active">
+                <th>Cold water index</th>
+                <td>{{ apartamente.address }}</td>
+
+            </tr>
+            <tr class="table-dark">
+                <th>Total debt </th>
+                <td>{{ apartamente.calculate_total_debt }} lei</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<a class="btn btn-warning me-1" href="{% url 'edit' apartamente.id %}">
+    Edit
+</a>
+{% endblock %}
